@@ -1,13 +1,60 @@
 #Importando a biblioteca e nomeando de 'tk'
 import tkinter as tk
 #===========================================
+#Importando outras bibliotecas 
+#===========================================
+import random as rd
+import string as sg
+
+#===========================================
 #Definindo um tamanho e largura fixo
 #===========================================
 LARGURA = "450"
 ALTURA = "400"
 
-def acao_clique():
-    print("O botão foi clicado!")
+#===========================================
+#7. Funções do sistema (A Lógica)
+#===========================================
+def gerar_senha():
+    try:
+    #Verificando se a quantidade de caracteres definida é menor do que 4
+        tamanho = entry_tamanho.get()
+        if tamanho < 4:
+            lbl_resultado.config(
+                text="Erro: minímo de 4 caracteres!",
+                fg="#b60707"
+            )
+            return
+        caracteres = ""
+        if var_maiuscula.get():
+            caracteres += sg.ascii_uppercase
+        if var_minuscula.get():
+            caracteres += sg.ascii_lowercase
+        if var_numeral.get():
+            caracteres += sg.digits
+        if var_especial.get():
+            caracteres += sg.punctuation
+
+        if not caracteres:
+            lbl_resultado.config(
+                text="Erro: selecione ao menos uma opção!",
+                fg="#b60707"
+            )
+            return
+
+        psw = "".join(
+            rd.choice(caracteres) for i in range(tamanho)
+            )
+
+        lbl_resultado.config(
+            text= f"Senha:{psw}",
+            fg="#81C513"
+        )
+    except ValueError:
+        lbl_resultado.config(
+            text = "Erro: Digite um número válido!",
+            fg="#b60707"
+        )
 
 #===========================================
 #1. Configuração a Janela Principal
@@ -107,9 +154,31 @@ chk_especial = tk.Checkbutton(
 chk_especial.pack(anchor="w", padx=60, pady=2)
 
 #===========================================
-#5. Botão de intração
+#5. Botão de intração (btn: se torta objeto)
 #===========================================
+btn_gerar = tk.Button(
+    janela,
+    text="Gerar senha segura",
+    command=gerar_senha,
+    bg="#002b56",
+    fg="#ffffff",
+    activebackground="#00bbf0",
+    padx=10,
+    pady=5
+)
+btn_gerar.pack(anchor="center", pady=15)
 
+#===========================================
+#7. Label que apresenta o resultado 
+#===========================================
+lbl_resultado = tk.Label(
+    janela,
+    text = "Senha resultante aqui",
+    font=("arial", 11, "italic", "bold"),
+    bg="#00f5ff",
+    fg="#002b36"
+)
+lbl_resultado.pack(pady=5)
 
 #===========================================
 #1. Matém a janela aberta rodando
