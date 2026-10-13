@@ -25,7 +25,9 @@ def gerar_senha():
                 fg="#b60707"
             )
             return
+        
         caracteres = ""
+        
         if var_maiuscula.get():
             caracteres += sg.ascii_uppercase
         if var_minuscula.get():
