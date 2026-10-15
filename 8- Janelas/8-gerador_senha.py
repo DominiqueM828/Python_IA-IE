@@ -10,7 +10,7 @@ import string as sg
 #Definindo um tamanho e largura fixo
 #===========================================
 LARGURA = "450"
-ALTURA = "400"
+ALTURA = "430"
 
 #===========================================
 #7. Funções do sistema (A Lógica)
@@ -18,7 +18,7 @@ ALTURA = "400"
 def gerar_senha():
     try:
     #Verificando se a quantidade de caracteres definida é menor do que 4
-        tamanho = entry_tamanho.get()
+        tamanho = int(entry_tamanho.get())
         if tamanho < 4:
             lbl_resultado.config(
                 text="Erro: minímo de 4 caracteres!",
@@ -49,13 +49,30 @@ def gerar_senha():
             )
 
         lbl_resultado.config(
-            text= f"Senha:{psw}",
-            fg="#81C513"
+            text= f"Senha: {psw}",
+            fg="#07D100"
         )
     except ValueError:
         lbl_resultado.config(
             text = "Erro: Digite um número válido!",
             fg="#b60707"
+        )
+
+#===========================================
+#8. Botão Área de Transferência
+#===========================================
+def copiar_pws():
+    text_resul = lbl_resultado.cget("text")
+
+    if "Senha: " in text_resul:
+        senha_pura = text_resul.replace("Senha: ", "")
+        #replace troca a palavra "senha" por "vazio"
+        janela.clipboard_clear()
+        janela.clipboard_append(senha_pura)
+    else:
+        lbl_status_copia.config(
+            text = "Senha não gerada!",
+            fg = "#b60707"
         )
 
 #===========================================
@@ -175,12 +192,36 @@ btn_gerar.pack(anchor="center", pady=15)
 #===========================================
 lbl_resultado = tk.Label(
     janela,
-    text = "Senha resultante aqui",
+    text = "Senha será exibida aqui: ",
     font=("arial", 11, "italic", "bold"),
     bg="#00f5ff",
     fg="#002b36"
 )
 lbl_resultado.pack(pady=5)
+
+#===========================================
+#8. Botão de cópia senha
+#===========================================
+btn_copiar = tk.Button(
+    janela,
+    text= "Copiar",
+    command= copiar_pws,
+    font=("arial", 10, "bold"),
+    bg="#002b56",
+    fg="#ffffff",
+    padx= 8,
+    pady= 3
+)
+btn_copiar.pack(pady= 5 )
+
+lbl_status_copia = tk.Label(
+    janela,
+    text = " ",
+    font=("arial", 9 , "italic"),
+    bg="#00f5ff",
+    fg="#002b36"
+)
+lbl_status_copia.pack(pady=4)
 
 #===========================================
 #1. Matém a janela aberta rodando
